@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>O.Tickers</title>
   <style>
     /* Local fonts using files from the fonts folder */
@@ -62,62 +62,69 @@
       z-index: 2;
     }
 
+    /* Title - 30% smaller than original */
     .title {
-      font-size: clamp(1rem, 1.5vw, 2.25rem);
+      /* Original: clamp(1rem, 1.5vw, 2.25rem) => now ~0.7x each value */
+      font-size: clamp(0.7rem, 1.05vw, 1.575rem);
       color: white;
       margin-bottom: 4px;
       font-family: 'NeueMachina-Light', sans-serif;
     }
 
+    /* Marketcap - 20% bigger than original */
     .marketcap-container {
+      /* Original: clamp(1.5rem, 5vw, 4rem) => now ~1.2x each value */
+      font-size: clamp(1.8rem, 6vw, 4.8rem);
+      font-family: 'NeueMachina-Light', sans-serif;
+      font-weight: bold;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: clamp(1.5rem, 5vw, 4rem);
-      font-family: 'NeueMachina-Light', sans-serif;
-      font-weight: bold;
       margin-bottom: 6px;
       gap: 10px;
     }
 
-    /* Remove default top margin for the countdown's <h1> element */
+    /* Remove default top margin for h1 if used with marketcap-container */
     h1.marketcap-container {
       margin-top: 0;
     }
 
+    /* Price & Volume text - 30% smaller than original */
     .small-text {
-      font-size: clamp(1rem, 1.5vw, 2.25rem);
+      /* Original: clamp(1rem, 1.5vw, 2.25rem) => now ~0.7x each value */
+      font-size: clamp(0.7rem, 1.05vw, 1.575rem);
       color: gray;
       font-family: 'NeueMachina-Light', sans-serif;
     }
-    
-    /* Style for MCAP label using GeistMono */
+
+    /* MCAP label - 30% smaller (unchanged from your snippet) */
     .mcap-label {
       font-family: 'GeistMono-Regular', monospace;
       text-transform: uppercase;
-      font-size: clamp(1rem, 1.5vw, 2.25rem);
+      font-size: clamp(0.7rem, 1.05vw, 1.575rem);
     }
-    
-    /* Style for 24hr change using GeistMono */
+
+    /* 24hr change - 30% smaller (unchanged) */
     .change {
       font-family: 'GeistMono-Regular', monospace;
       text-transform: uppercase;
-      font-size: clamp(1rem, 1.5vw, 2.25rem);
+      font-size: clamp(0.7rem, 1.05vw, 1.575rem);
     }
-    
+
     .change.up {
       color: #6eff96;
     }
-    
+
     .change.down {
       color: #ff6e6e;
     }
 
+    /* Divider - wide gap, thin line */
     .divider {
       width: 50%;
       height: 1px;
       background: rgba(255, 255, 255, 0.1);
-      margin: 1.5rem auto;
+      margin: 3rem auto;
     }
   </style>
 </head>
@@ -154,16 +161,6 @@
     </div>
   </div>
 
-  <div class="divider"></div>
-
-  <!-- Countdown Section -->
-  <div class="container">
-    <span class="title">O Limitless Summit Countdown</span>
-    <h1 class="marketcap-container">
-      <span id="countdown">Calculating...</span>
-    </h1>
-  </div>
-
   <script>
     /**
      * Fetch market data from DexScreener and update DOM elements.
@@ -189,9 +186,9 @@
           changeElem.innerText = `${pair.priceChange.h24.toFixed(2)}%`;
           changeElem.className = `change ${pair.priceChange.h24 >= 0 ? 'up' : 'down'}`;
           // Update Price
-          document.getElementById(priceId).innerText = isOI ?
-            parseInt(pair.priceUsd).toLocaleString() :
-            parseFloat(pair.priceUsd).toFixed(4);
+          document.getElementById(priceId).innerText = isOI
+            ? parseInt(pair.priceUsd).toLocaleString()
+            : parseFloat(pair.priceUsd).toFixed(4);
           // Update Volume (24h)
           if (pair.volume && pair.volume.h24) {
             document.getElementById(volumeId).innerText = parseInt(pair.volume.h24).toLocaleString();
@@ -204,27 +201,27 @@
       }
     }
 
-    // Countdown function
-    function updateCountdown() {
-      const eventTime = new Date('February 22, 2025 14:30:00 GMT+8').getTime();
-      const now = Date.now();
-      const timeLeft = eventTime - now;
-      const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-      document.getElementById("countdown").innerText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-    }
-
-    // Update market data for both tokens every 10 seconds and countdown every second.
     function updateData() {
-      fetchMarketData('DP1zq8PVJa6haTNfZHVDtzi8oNkNnoBYhjf4YHUZ1XFj', 'mcapOI', 'changeOI', 'priceOI', 'volumeOI', true);
-      fetchMarketData('C95f5F6ZHCtDxaUyRQZiLkHUxoF73PcoYJ8yJDX7JUjk', 'mcapOSOL', 'changeOSOL', 'priceOSOL', 'volumeOSOL', false);
+      fetchMarketData(
+        'DP1zq8PVJa6haTNfZHVDtzi8oNkNnoBYhjf4YHUZ1XFj',
+        'mcapOI',
+        'changeOI',
+        'priceOI',
+        'volumeOI',
+        true
+      );
+      fetchMarketData(
+        'C95f5F6ZHCtDxaUyRQZiLkHUxoF73PcoYJ8yJDX7JUjk',
+        'mcapOSOL',
+        'changeOSOL',
+        'priceOSOL',
+        'volumeOSOL',
+        false
+      );
     }
 
     updateData();
     setInterval(updateData, 10000);
-    setInterval(updateCountdown, 1000);
   </script>
 </body>
 </html>
